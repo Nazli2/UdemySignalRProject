@@ -55,12 +55,13 @@ public class ProductController : ControllerBase
             Description = createProductDto.Description,
             Price = createProductDto.Price,
             ImageUrl = createProductDto.ImageUrl,
-            ProductStatus = createProductDto.ProductStatus
+            ProductStatus = createProductDto.ProductStatus,
+            CategoryID = createProductDto.CategoryID
         });
         return Ok("Ürün Bilgisi Eklendi");
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public IActionResult DeleteProduct(int id)
     {
         var value = _productService.TGetByID(id);
@@ -68,7 +69,7 @@ public class ProductController : ControllerBase
         return Ok("Ürün Bilgisi Silindi");
     }
 
-    [HttpGet("GetProduct")]
+    [HttpGet("{id}")]
     public IActionResult GetProduct(int id)
     {
         var value = _productService.TGetByID(id);
@@ -85,7 +86,8 @@ public class ProductController : ControllerBase
             Description = updateProductDto.Description,
             Price = updateProductDto.Price,
             ImageUrl = updateProductDto.ImageUrl,
-            ProductStatus = updateProductDto.ProductStatus
+            ProductStatus = updateProductDto.ProductStatus,
+            CategoryID = updateProductDto.CategoryID
         });
         return Ok("Ürün Bilgisi Güncellendi");
     }
