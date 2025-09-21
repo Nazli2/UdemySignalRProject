@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SignalR.BusinessLayer.Abstract;
-using SignalR.DtoLayer.DiscountDto;
 using SignalR.DtoLayer.FeatureDto;
 using SignalR.EntityLayer.Entities;
 
@@ -26,50 +25,31 @@ public class FeatureController : ControllerBase
         var value = _mapper.Map<List<ResultFeatureDto>>(_featureService.TGetListAll());
         return Ok(value);
     }
-
     [HttpPost]
     public IActionResult CreateFeature(CreateFeatureDto createFeatureDto)
     {
-        _featureService.TAdd(new Feature()
-        {
-            Title1 = createFeatureDto.Title1,
-            Description1 = createFeatureDto.Description1,
-            Title2 = createFeatureDto.Title2,
-            Description2 = createFeatureDto.Description2,
-            Title3 = createFeatureDto.Title3,
-            Description3 = createFeatureDto.Description3
-        });
+        var value = _mapper.Map<Feature>(createFeatureDto);
+        _featureService.TAdd(value);
         return Ok("Öne Çıkan Bilgisi Eklendi");
     }
-
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public IActionResult DeleteFeature(int id)
     {
         var value = _featureService.TGetByID(id);
         _featureService.TDelete(value);
         return Ok("Öne Çıkan Bilgisi Silindi");
     }
-
-    [HttpGet("GetFeature")]
+    [HttpGet("{id}")]
     public IActionResult GetFeature(int id)
     {
         var value = _featureService.TGetByID(id);
-        return Ok(value);
+        return Ok(_mapper.Map<GetFeatureDto>(value));
     }
-
     [HttpPut]
     public IActionResult UpdateFeature(UpdateFeatureDto updateFeatureDto)
     {
-        _featureService.TUpdate(new Feature()
-        {
-            FeatureID = updateFeatureDto.FeatureID,
-            Title1 = updateFeatureDto.Title1,
-            Description1 = updateFeatureDto.Description1,
-            Title2 = updateFeatureDto.Title2,
-            Description2 = updateFeatureDto.Description2,
-            Title3 = updateFeatureDto.Title3,
-            Description3 = updateFeatureDto.Description3
-        });
+        var value = _mapper.Map<Feature>(updateFeatureDto);
+        _featureService.TUpdate(value);
         return Ok("Öne Çıkan Bilgisi Güncellendi");
     }
 }

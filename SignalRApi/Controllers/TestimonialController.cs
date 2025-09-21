@@ -9,65 +9,50 @@ using SignalR.EntityLayer.Entities;
 namespace SignalRApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class TestimonialController : ControllerBase
-{
-    private readonly ITestimonialService _testimonialService;
-    private readonly IMapper _mapper;
-
-    public TestimonialController(ITestimonialService testimonialService, IMapper mapper)
+    public class TestimonialController : ControllerBase
     {
-        _testimonialService = testimonialService;
-        _mapper = mapper;
-    }
-
-    [HttpGet]
-    public IActionResult TestimonialList()
-    {
-        var value = _mapper.Map<List<ResultTestimonialDto>>(_testimonialService.TGetListAll());
-        return Ok(value);
-    }
-
-    [HttpPost]
-    public IActionResult CreateTestimonial(CreateTestimonialDto createTestimonialDto)
-    {
-        _testimonialService.TAdd(new Testimonial()
+        private readonly ITestimonialService _testoimonialService;
+        private readonly IMapper _mapper;
+        public TestimonialController(ITestimonialService testoimonialService, IMapper mapper)
         {
-            Name = createTestimonialDto.Name,
-            Title = createTestimonialDto.Title,
-            Comment = createTestimonialDto.Comment,
-            ImageUrl = createTestimonialDto.ImageUrl,
-            Status = createTestimonialDto.Status
-        });
-        return Ok("Müşteri Yorum Bilgisi Eklendi");
-    }
+            _testoimonialService = testoimonialService;
+            _mapper = mapper;
+        }
 
-    [HttpDelete]
-    public IActionResult DeleteTestimonial(int id)
-    {
-        var value = _testimonialService.TGetByID(id);
-        _testimonialService.TDelete(value);
-        return Ok("Müşteri Yorum Bilgisi Silindi");
-    }
-
-    [HttpGet("GetTestimonial")]
-    public IActionResult GetTestimonial(int id)
-    {
-        var value = _testimonialService.TGetByID(id);
-        return Ok(value);
-    }
-
-    [HttpPut]
-    public IActionResult UpdateTestimonial(UpdateTestimonialDto updateTestimonialDto)
-    {
-        _testimonialService.TUpdate(new Testimonial()
+        [HttpGet]
+        public IActionResult TestimonialList()
         {
-            TestimonialID = updateTestimonialDto.TestimonialID,
-            Name = updateTestimonialDto.Name,
-            Title = updateTestimonialDto.Title,
-            Comment = updateTestimonialDto.Comment,
-            ImageUrl = updateTestimonialDto.ImageUrl,
-            Status = updateTestimonialDto.Status
-        });
-        return Ok("Müşteri Yorum Bilgisi Güncellendi");
+            var value = _mapper.Map<List<ResultTestimonialDto>>(_testoimonialService.TGetListAll());
+            return Ok(value);
+        }
+        [HttpPost]
+        public IActionResult CreateTestimonial(CreateTestimonialDto createTestimonialDto)
+        {
+            var value = _mapper.Map<Testimonial>(createTestimonialDto);
+            _testoimonialService.TAdd(value);
+            return Ok("Müşteri Yorum Bilgisi Eklendi");
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteTestimonial(int id)
+        {
+            var value = _testoimonialService.TGetByID(id);
+            _testoimonialService.TDelete(value);
+            return Ok("Müşteri Yorum Bilgisi Silindi");
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetTestimonial(int id)
+        {
+            var value = _testoimonialService.TGetByID(id);
+            return Ok(_mapper.Map<GetTestimonialDto>(value));
+        }
+
+        [HttpPut]
+        public IActionResult UpdateTestimonial(UpdateTestimonialDto updateTestimonialDto)
+        {
+            var value = _mapper.Map<Testimonial>(updateTestimonialDto);
+            _testoimonialService.TUpdate(value);
+            return Ok("Müşteri Yorum Bilgisi Güncellendi");
+        }
     }
-}
+

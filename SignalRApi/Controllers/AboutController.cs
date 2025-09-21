@@ -1,66 +1,55 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SignalR.BusinessLayer.Abstract;
 using SignalR.DtoLayer.AboutDto;
 using SignalR.EntityLayer.Entities;
 
-namespace SignalRApi.Controllers;
-[Route("api/[controller]")]
-[ApiController]
-public class AboutController : ControllerBase
+namespace SignalRApi.Controllers
 {
-    private readonly IAboutService _aboutService;
-
-    public AboutController(IAboutService aboutService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AboutController : ControllerBase
     {
-        _aboutService = aboutService;
-    }
-
-    [HttpGet]
-    public IActionResult AboutList()
-    {
-        var values = _aboutService.TGetListAll();
-        return Ok(values);
-    }
-
-    [HttpPost]
-    public IActionResult CreateAbout(CreateAboutDto createAboutDto)
-    {
-        About about = new About()
+        private readonly IAboutService _aboutService;
+        private readonly IMapper _mapper;
+        public AboutController(IAboutService aboutService, IMapper mapper)
         {
-            Title = createAboutDto.Title,
-            Description = createAboutDto.Description,
-            ImageUrl = createAboutDto.ImageUrl
-        };
-        _aboutService.TAdd(about);
-        return Ok("Hakkımda Kısmı Başarılı Bir Şekilde Eklendi");
-    }
+            _aboutService = aboutService;
+            _mapper = mapper;
+        }
 
-    [HttpDelete]
-    public IActionResult DeleteAbout(int id)
-    {
-        var value = _aboutService.TGetByID(id);
-        _aboutService.TDelete(value);
-        return Ok("Hakkımda Alanı Silindi");
-    }
-
-    [HttpPut]
-    public IActionResult UpdateAbout(UpdateAboutDto updateAboutDto)
-    {
-        About about = new About()
+        [HttpGet]
+        public IActionResult AboutList()
         {
-            Title = updateAboutDto.Title,
-            Description = updateAboutDto.Description,
-            ImageUrl = updateAboutDto.ImageUrl
-        };
-        _aboutService.TUpdate(about);
-        return Ok("Hakkımda Alanı Güncellendi");
-    }
-
-    [HttpGet("GetAbout")]
-    public IActionResult GetAbout(int id)
-    {
-        var value = _aboutService.TGetByID(id);
-        return Ok(value);
+            var values = _aboutService.TGetListAll();
+            return Ok(_mapper.Map<List<ResultAboutDto>>(values));
+        }
+        [HttpPost]
+        public IActionResult CreateAbout(CreateAboutDto createAboutDto)
+        {
+            var value = _mapper.Map<About>(createAboutDto);
+            _aboutService.TAdd(value);
+            return Ok("Hakkımda Kısmı Başarılı Bir Şekilde Eklendi");
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAbout(int id)
+        {
+            var value = _aboutService.TGetByID(id);
+            _aboutService.TDelete(value);
+            return Ok("Hakkımda Alanı Silindi");
+        }
+        [HttpPut]
+        public IActionResult UpdateAbout(UpdateAboutDto updateAboutDto)
+        {
+            var value = _mapper.Map<About>(updateAboutDto);
+            _aboutService.TUpdate(value);
+            return Ok("Hakkımda Alanı Güncellendi");
+        }
+        [HttpGet("{id}")]
+        public IActionResult GetAbout(int id)
+        {
+            var value = _aboutService.TGetByID(id);
+            return Ok(_mapper.Map<GetAboutDto>(value));
+        }
     }
 }

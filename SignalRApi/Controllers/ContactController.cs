@@ -25,46 +25,31 @@ public class ContactController : ControllerBase
         var value = _mapper.Map<List<ResultContactDto>>(_contactService.TGetListAll());
         return Ok(value);
     }
-
     [HttpPost]
     public IActionResult CreateContact(CreateContactDto createContactDto)
     {
-        _contactService.TAdd(new Contact()
-        {
-            Location = createContactDto.Location,
-            Phone = createContactDto.Phone,
-            Number = createContactDto.Number,
-            FooterDescription = createContactDto.FooterDescription
-        });
+        var value = _mapper.Map<Contact>(createContactDto);
+        _contactService.TAdd(value);
         return Ok("İletişim Bilgisi Eklendi");
     }
-
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public IActionResult DeleteContact(int id)
     {
         var value = _contactService.TGetByID(id);
         _contactService.TDelete(value);
         return Ok("İletişim Bilgisi Silindi");
     }
-
-    [HttpGet("GetContact")]
+    [HttpGet("{id}")]
     public IActionResult GetContact(int id)
     {
         var value = _contactService.TGetByID(id);
-        return Ok(value);
+        return Ok(_mapper.Map<GetContactDto>(value));
     }
-
     [HttpPut]
     public IActionResult UpdateContact(UpdateContactDto updateContactDto)
     {
-        _contactService.TUpdate(new Contact()
-        {
-            ContactID = updateContactDto.ContactID,
-            Location = updateContactDto.Location,
-            Phone = updateContactDto.Phone,
-            Number = updateContactDto.Number,
-            FooterDescription = updateContactDto.FooterDescription
-        });
+        var value = _mapper.Map<Contact>(updateContactDto);
+        _contactService.TUpdate(value);
         return Ok("İletişim Bilgisi Güncellendi");
     }
 }
