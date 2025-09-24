@@ -29,6 +29,48 @@ public class ProductController : ControllerBase
         return Ok(value);
     }
 
+    [HttpGet("ProductCount")]
+    public IActionResult ProductCount()
+    {
+        return Ok(_productService.TProductCount());
+    }
+
+    [HttpGet("ProductCountByCategoryNameSalatalar")]
+    public IActionResult ProductCountByCategoryNameSalatalar()
+    {
+        return Ok(_productService.TProductCountByCategoryNameSalatalar());
+    }
+
+    [HttpGet("ProductCountByCategoryNameTatlılar")]
+    public IActionResult ProductCountByCategoryNameTatlılar()
+    {
+        return Ok(_productService.TProductCountByCategoryNameTatlılar());
+    }
+
+    [HttpGet("ProductPriceAvg")]
+    public IActionResult ProductPriceAvg()
+    {
+        return Ok(_productService.TProductPriceAvg());
+    }
+
+    [HttpGet("ProductNameByMaxPrice")]
+    public IActionResult ProductNameByMaxPrice()
+    {
+        return Ok(_productService.TProductNameByMaxPrice());
+    }
+
+    [HttpGet("ProductNameByMinPrice")]
+    public IActionResult ProductNameByMinPrice()
+    {
+        return Ok(_productService.TProductNameByMinPrice());
+    }
+
+    [HttpGet("ProductAvgPriceBySalatalar")]
+    public IActionResult ProductAvgPriceBySalatalar()
+    {
+        return Ok(_productService.TProductAvgPriceBySalatalar());
+    }
+
     [HttpGet("ProductListWithCategory")]
     public IActionResult ProductListWithCategory()
     {

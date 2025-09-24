@@ -12,6 +12,11 @@ public class ProductManager : IProductService
         _productDal = productDal;
     }
 
+    public int TProductCount()
+    {
+        return _productDal.ProductCount();
+    }
+
     public void TAdd(Product entity)
     {
         _productDal.Add(entity);
@@ -40,5 +45,35 @@ public class ProductManager : IProductService
     public void TUpdate(Product entity)
     {
         _productDal.Update(entity);
+    }
+
+    public int TProductCountByCategoryNameSalatalar()
+    {
+        return _productDal.ProductCountByCategoryNameSalatalar();
+    }
+
+    public int TProductCountByCategoryNameTatlılar()
+    {
+        return _productDal.ProductCountByCategoryNameTatlılar();
+    }
+
+    public decimal TProductPriceAvg()
+    {
+        return _productDal.ProductPriceAvg();
+    }
+
+    public string TProductNameByMaxPrice()
+    {
+        return _productDal.ProductNameByMaxPrice();
+    }
+
+    public string TProductNameByMinPrice()
+    {
+        return _productDal.ProductNameByMinPrice();
+    }
+
+    public decimal TProductAvgPriceBySalatalar()
+    {
+        return _productDal.ProductAvgPriceBySalatalar();
     }
 }
