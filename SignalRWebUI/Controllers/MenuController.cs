@@ -34,8 +34,10 @@ public class MenuController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddBasket(CreateBasketDto createBasketDto)
+    public async Task<IActionResult> AddBasket(int id)
     {
+        CreateBasketDto createBasketDto = new CreateBasketDto();
+        createBasketDto.ProductID = id;
         var client = _httpClientFactory.CreateClient();
         var jsonData = JsonConvert.SerializeObject(createBasketDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
