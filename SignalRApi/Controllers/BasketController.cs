@@ -57,4 +57,12 @@ public class BasketController : ControllerBase
         });
         return Ok();
     }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteBasket(int id)
+    {
+        var value = _basketService.TGetByID(id);
+        _basketService.TUpdate(value);
+        return Ok("Sepetteki Seçilen Ürün Silindi");
+    }
 }
