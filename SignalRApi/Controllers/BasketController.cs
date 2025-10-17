@@ -62,7 +62,7 @@ public class BasketController : ControllerBase
     public IActionResult DeleteBasket(int id)
     {
         var value = _basketService.TGetByID(id);
-        _basketService.TUpdate(value);
+        _basketService.TDelete(value);
         return Ok("Sepetteki Seçilen Ürün Silindi");
     }
 }

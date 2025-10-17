@@ -23,4 +23,15 @@ public class BasketsController : Controller
         }
         return View();
     }
+    public async Task<IActionResult> DeleteBasket(int id)
+    {
+        //id = int.Parse(TempData["id"].ToString());
+        var client = _httpClientFactory.CreateClient();
+        var responseMessage = await client.DeleteAsync($"https://localhost:7246/api/Basket/{id}");
+        if (responseMessage.IsSuccessStatusCode)
+        {
+            return RedirectToAction("Index");
+        }
+        return NoContent();
+    }
 }
